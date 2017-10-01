@@ -81,7 +81,7 @@
 <body>
     <header>
         <h1>Housing Ownership in Kentucky</h1>
-        <h2>Housing characteristics by county</h2>)
+        <h2>Housing characteristics by county</h2>
     </header>
 
     <div id='map'></div>
@@ -112,19 +112,19 @@ var map = L.map('map', options);
 map.addControl( L.control.zoom({ position: 'topright' }));  //creates and places the zoom control on the map page
 
 // create a new Leaflet map, passing map options, and assign to variable
-
 var dataLayer, // declare global variable for map units
 attribute = "OWNED_MORT", // assign initial variable to store data attribute
 norm = "OCCUPIED"; // asign initial variable to store normalizing data attribute
 
 // QJuery AJAX request to load external GEoJSON file
 $.getJSON("data/ky_counties_housing.json", function(data) {
-
+console.log(data); // This console.log allows viewing of data in the web browsere console log
+    
 // create Leaflet GeoJson layer with GeoJSON data and assign to global variable
 dataLayer = L.geoJson(data, {
 style: function(feature) { // style each feature of GeoJson layer
 return {
-color: '#dddddd', // set stroke color
+color: '#7F7676', // set stroke color, otherwise known as the line color for each county
 weight: 2, // set stroke weight
 fillOpacity: 1, // override defautl fill opacity
 fillColor: '#1f78b4' // set fill color
@@ -187,9 +187,7 @@ return breaks;
 }
 function getColor(d, breaks) {
 
-// function accepts a single normalized data attribute value
-// and uses a series of conditional statements to determine which
-// which color value to return to return to the function caller
+// function accepts a single normalized data attribute value and uses a series of conditional statements to determine which which color value to return to return to the function caller
 if(d <= breaks[0][1]) {
 return '#f1eef6';
 } else if(d <= breaks[1][1]) {
@@ -213,27 +211,25 @@ legend.onAdd = function (map) {
 // create a new HTML <div> element and give it a class name of "legend"
 var div = L.DomUtil.create('div', 'legend');
 
-// first append an <h3> tag to the div holding the current attribute
-// and norm values (i.e., the mapped phenenomena)
+// first append an <h3> tag to the div holding the current attribute and norm values (i.e., the mapped phenenomena)
 div.innerHTML = "<h3>" + attribute + " per " + norm + "</h3>";
 
 // for each of our breaks
 for (var i = 0; i < breaks.length; i++) {
-
-// determine the color associated with each break value,
-// including the lower range value
+// determine the color associated with each break value, including the lower range value
 var color = getColor(breaks[i][0], breaks);
 
-// concatenate a <span> tag styled with the color and include the range values
-// of that particular classification group
+// concatenate a <span> tag styled with the color and include the range values of that particular classification group
 div.innerHTML +=
 '<span style="background:' + color + '"></span> ' +
 '<label>'+(breaks[i][0]*100).toLocaleString() + ' &mdash; ' +
 (breaks[i][1]*100).toLocaleString() + '</label>';
 }
+
 // return the populated div to be added to the map
 return div;
 };
+
 // add the legend to the map
 legend.addTo(map);
 }
