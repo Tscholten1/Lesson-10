@@ -46,7 +46,8 @@
             color: #001323;
         }
 
-        .legend {
+/*      Legend style rules that will be applied to the div rules  */
+.legend {
     padding: 6px 8px;
     font-size: 1em;
     background: rgba(255,255,255,0.8);
@@ -73,7 +74,7 @@
     display: block;
     clear: both;
 }
-        
+  
     </style>
 </head>
 
@@ -92,44 +93,14 @@
         </p>
     </footer>
 
-
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script src="https://unpkg.com/simple-statistics@2.5.0/dist/simple-statistics.min.js"></script>
 
     <script>
-        // WRITE YOUR SWEET CODE HERE
-
-//    var options = {
-//        center: [37.8, -85.8],
-//        zoom: 7.4,
-//        zoomSnap: .1,
-//        zoomControl: false
-//    }
-//    var map = L.map('map', options);
-//    
-//    var dataLayer, //declare global variable for map units
-//        attribute = "OWNED_MORT", // assign initial variable to store data attribute
-//        norm = "OCCUPIED";
-//
-//    $.getJSON("data/ky_counties_housing.json", function(data) {
-//    // the data loaded from the file is accessible here within this function scope!
-//});
-//
-//    var dataLayer = L.geojson(data, {
-//        style: function(feature) {
-//        return {
-//                color: '#dddddd',
-//                weight: 2,
-//                fillOpacity: 1,
-//                fillColor: '#1f78b4'
-//            };
-//    }          
-//}).addTo(map);
-//    
-//    drawMap(dataLayer); // call to new function here gets the data out of the callback function
+// WRITE YOUR SWEET CODE HERE
         
-      // set initial options for the map
+// set initial options for the map
 var options = {
     center: [37.8, -85.8],
     zoom: 7.4,
@@ -137,15 +108,17 @@ var options = {
     zoomControl: false
 }
 var map = L.map('map', options);
-map.addControl( L.control.zoom({ position: 'topright' }));
-        
+map.addControl( L.control.zoom({ position: 'topright' }));  //creates and places the zoom control on the map page
+
 // create a new Leaflet map, passing map options, and assign to variable
-//var map = L.map('map', options);
+
 var dataLayer, // declare global variable for map units
 attribute = "OWNED_MORT", // assign initial variable to store data attribute
 norm = "OCCUPIED"; // asign initial variable to store normalizing data attribute
+
 // QJuery AJAX request to load external GEoJSON file
 $.getJSON("data/ky_counties_housing.json", function(data) {
+
 // create Leaflet GeoJson layer with GeoJSON data and assign to global variable
 dataLayer = L.geoJson(data, {
 style: function(feature) { // style each feature of GeoJson layer
@@ -160,12 +133,16 @@ fillColor: '#1f78b4' // set fill color
 drawMap(); // call function to draw the map
 });
 function drawMap() {
+
 // call function to determine class breaks and assign return value to variable
 var breaks = getClassBreaks();
+
 // loop through each layer of the GeoJson layer
 dataLayer.eachLayer(function(layer) {
+
 // create shorthand variable to access layer properties
 var props = layer.feature.properties;
+
 // change the fill color of the layer using the layer's attribute values
 layer.setStyle({
 fillColor: getColor(props[attribute]/
